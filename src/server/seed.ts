@@ -6,10 +6,22 @@ import { CORE_TABLES, createTables } from './schema.ts';
 export function seedDatabase(db: DatabaseSync): void {
   createTables(db);
 
-  // Check if already seeded
+  // Check if already seeded with the latest Sample 1..5 personas
   const existingUsers = db.prepare('SELECT COUNT(*) as count FROM users').get() as { count: number };
   if (existingUsers.count > 0) {
-    return;
+    const sampleCheck = db
+      .prepare("SELECT full_name FROM users WHERE id = 'user_meena'")
+      .get() as { full_name?: string } | undefined;
+    if (sampleCheck?.full_name === 'Sample 1') {
+      return;
+    }
+    // Existing DB has outdated persona names; drop and re-seed cleanly
+    db.exec('PRAGMA foreign_keys = OFF;');
+    for (const table of [...CORE_TABLES].reverse()) {
+      db.exec(`DROP TABLE IF EXISTS ${table};`);
+    }
+    db.exec('PRAGMA foreign_keys = ON;');
+    createTables(db);
   }
 
   const now = '2026-09-28T10:30:00Z';
@@ -20,11 +32,11 @@ export function seedDatabase(db: DatabaseSync): void {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
-  insertUser.run('user_meena', 'meena', 'Meena Murmu', 'student', '9876500001', 'STU-MEENA', 'Demo Mobile OTP / Simulated Locker Login', now);
-  insertUser.run('user_arjun', 'arjun', 'Arjun Murmu', 'student', '9876500002', 'STU-ARJUN', 'Demo Mobile OTP / Simulated Locker Login', now);
-  insertUser.run('user_lakshmi', 'lakshmi', 'Lakshmi Hembram', 'student', '9876500003', 'STU-LAKSHMI', 'Demo Assisted Access / Simulated OTP Login', now);
-  insertUser.run('user_kamala', 'kamala', 'Kamala Devi', 'guardian', '9876500010', 'GRD-KAMALA', 'Demo Guardian Mobile OTP', now);
-  insertUser.run('user_rajesh', 'rajesh', 'Rajesh Kumar', 'officer', '9876500020', 'OFF-RAJESH', 'Demo Government Officer SSO', now);
+  insertUser.run('user_meena', 'sample1', 'Sample 1', 'student', '9876500001', 'STU-SAMPLE-1', 'Demo Mobile OTP / Simulated Locker Login', now);
+  insertUser.run('user_arjun', 'sample2', 'Sample 2', 'student', '9876500002', 'STU-SAMPLE-2', 'Demo Mobile OTP / Simulated Locker Login', now);
+  insertUser.run('user_lakshmi', 'sample3', 'Sample 3', 'student', '9876500003', 'STU-SAMPLE-3', 'Demo Assisted Access / Simulated OTP Login', now);
+  insertUser.run('user_kamala', 'sample4', 'Sample 4', 'guardian', '9876500010', 'GRD-SAMPLE-4', 'Demo Guardian Mobile OTP', now);
+  insertUser.run('user_rajesh', 'sample5', 'Sample 5', 'officer', '9876500020', 'OFF-SAMPLE-5', 'Demo Government Officer SSO', now);
 
   // 2. Seed Schemes & Versioned Rules from JSON
   const rulesPath = path.resolve(process.cwd(), 'src/server/rules/schemes_v0_1.json');
@@ -91,9 +103,9 @@ export function seedDatabase(db: DatabaseSync): void {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
-  insertStudent.run('student_meena', 'user_meena', 'Meena Murmu', 'Clean Case', 'SCH_PRE_MATRIC', 'SETU-10492', 0, null, 100, now);
-  insertStudent.run('student_arjun', 'user_arjun', 'Arjun Murmu', 'Income Conflict', 'SCH_POST_MATRIC', 'SETU-20841', 0, null, 100, now);
-  insertStudent.run('student_lakshmi', 'user_lakshmi', 'Lakshmi Hembram', 'Assisted Access', 'SCH_POST_MATRIC', 'SETU-48291', 1, 'CSC-JH-KHUNTI-019', 95, now);
+  insertStudent.run('student_meena', 'user_meena', 'Sample 1', 'Clean Case', 'SCH_PRE_MATRIC', 'SETU-10492', 0, null, 100, now);
+  insertStudent.run('student_arjun', 'user_arjun', 'Sample 2', 'Income Conflict', 'SCH_POST_MATRIC', 'SETU-20841', 0, null, 100, now);
+  insertStudent.run('student_lakshmi', 'user_lakshmi', 'Sample 3', 'Assisted Access', 'SCH_POST_MATRIC', 'SETU-48291', 1, 'CSC-JH-KHUNTI-019', 95, now);
 
   // 4. Seed Student Profiles
   const insertProfile = db.prepare(`
@@ -123,11 +135,11 @@ export function seedDatabase(db: DatabaseSync): void {
     86.0, 74.0, 0, 'MATCHED', now
   );
 
-  // 5. Seed Guardian & Links (Kamala Devi -> strictly Meena and Arjun only)
+  // 5. Seed Guardian & Links (Sample 4 -> strictly Sample 1 and Sample 2 only)
   db.prepare(`
     INSERT INTO guardians (id, user_id, full_name, relationship, district, created_at)
     VALUES (?, ?, ?, ?, ?, ?)
-  `).run('guardian_kamala', 'user_kamala', 'Kamala Devi', 'Mother', 'Ranchi, Jharkhand', now);
+  `).run('guardian_kamala', 'user_kamala', 'Sample 4', 'Mother', 'Ranchi, Jharkhand', now);
 
   const insertLink = db.prepare(`
     INSERT INTO guardian_student_links (id, guardian_id, student_id, relationship, linked_at)
@@ -144,16 +156,16 @@ export function seedDatabase(db: DatabaseSync): void {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
-  // Meena Evidence (All VERIFIED)
-  insertEvidence.run('ev_meena_identity', 'student_meena', 'Identity', 'student_identity', 'Meena Murmu (DOB: 2011-05-14)', 'Simulated Identity Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2030-12-31', 'DEMO_DEMOGRAPHIC_MATCH', 0.99, 'DEMO-ID-JH-1001');
+  // Sample 1 Evidence (All VERIFIED)
+  insertEvidence.run('ev_meena_identity', 'student_meena', 'Identity', 'student_identity', 'Sample 1 (DOB: 2011-05-14)', 'Simulated Identity Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2030-12-31', 'DEMO_DEMOGRAPHIC_MATCH', 0.99, 'DEMO-ID-JH-1001');
   insertEvidence.run('ev_meena_st', 'student_meena', 'ST Status', 'st_status', 'VERIFIED', 'State Caste Certificate Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2035-12-31', 'DEMO_CERTIFICATE_SIGNATURE', 0.99, 'CERT-ST-JH-10492');
   insertEvidence.run('ev_meena_income', 'student_meena', 'Income', 'annual_income', '120000', 'State e-District Income Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2027-03-31', 'DEMO_CERTIFICATE_VERIFY', 0.98, 'CERT-INC-JH-10492');
   insertEvidence.run('ev_meena_academic', 'student_meena', 'Academic', 'academic_category', 'PRE_MATRIC', 'State Education Portal Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2027-05-31', 'DEMO_ENROLLMENT_CHECK', 0.99, 'ACA-JH-IX-10492');
   insertEvidence.run('ev_meena_inst', 'student_meena', 'Institution', 'institution_verified', '1', 'UDISE+ Institution Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2027-05-31', 'DEMO_INSTITUTION_ATTESTATION', 1.0, 'INST-UDISE-201401');
   insertEvidence.run('ev_meena_benefit', 'student_meena', 'Existing Benefit', 'existing_scholarship_benefit', '0', 'NSP Deduplication Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2027-03-31', 'DEMO_CROSS_SCHEME_CHECK', 0.99, 'DEDUP-NSP-10492');
 
-  // Arjun Evidence (Income Conflict: ₹2,40,000 Profile vs ₹2,80,000 Certificate straddling ₹2,50,000 Post-Matric threshold)
-  insertEvidence.run('ev_arjun_identity', 'student_arjun', 'Identity', 'student_identity', 'Arjun Murmu (DOB: 2007-08-22)', 'Simulated Identity Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2030-12-31', 'DEMO_DEMOGRAPHIC_MATCH', 0.99, 'DEMO-ID-JH-2002');
+  // Sample 2 Evidence (Income Conflict: ₹2,40,000 Profile vs ₹2,80,000 Certificate straddling ₹2,50,000 Post-Matric threshold)
+  insertEvidence.run('ev_arjun_identity', 'student_arjun', 'Identity', 'student_identity', 'Sample 2 (DOB: 2007-08-22)', 'Simulated Identity Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2030-12-31', 'DEMO_DEMOGRAPHIC_MATCH', 0.99, 'DEMO-ID-JH-2002');
   insertEvidence.run('ev_arjun_st', 'student_arjun', 'ST Status', 'st_status', 'VERIFIED', 'State Caste Certificate Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2035-12-31', 'DEMO_CERTIFICATE_SIGNATURE', 0.99, 'CERT-ST-JH-20841');
   insertEvidence.run('ev_arjun_income_profile', 'student_arjun', 'Income', 'annual_income', '240000', 'Student Profile Declaration', 'SELF_DECLARED', 'CONFLICT', now, '2027-03-31', 'STUDENT_DECLARATION', 0.80, 'PROF-DECL-20841');
   insertEvidence.run('ev_arjun_income_cert', 'student_arjun', 'Income', 'annual_income', '280000', 'State e-District Income Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'CONFLICT', now, '2027-03-31', 'DEMO_CERTIFICATE_VERIFY', 0.95, 'CERT-INC-JH-88412');
@@ -161,8 +173,8 @@ export function seedDatabase(db: DatabaseSync): void {
   insertEvidence.run('ev_arjun_inst', 'student_arjun', 'Institution', 'institution_verified', '1', 'AISHE Institution Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2027-06-30', 'DEMO_INSTITUTION_ATTESTATION', 1.0, 'INST-AISHE-U-0212');
   insertEvidence.run('ev_arjun_benefit', 'student_arjun', 'Existing Benefit', 'existing_scholarship_benefit', '0', 'NSP Deduplication Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2027-03-31', 'DEMO_CROSS_SCHEME_CHECK', 0.99, 'DEDUP-NSP-20841');
 
-  // Lakshmi Evidence (Assisted Access via CSC, tracking SETU-48291)
-  insertEvidence.run('ev_lakshmi_identity', 'student_lakshmi', 'Identity', 'student_identity', 'Lakshmi Hembram (DOB: 2009-11-03)', 'CSC Assisted Verification (Demo)', 'SIMULATED_CSC_ADAPTER', 'VERIFIED', now, '2030-12-31', 'DEMO_ASSISTED_KYC', 0.98, 'DEMO-ID-JH-3003');
+  // Sample 3 Evidence (Assisted Access via CSC, tracking SETU-48291)
+  insertEvidence.run('ev_lakshmi_identity', 'student_lakshmi', 'Identity', 'student_identity', 'Sample 3 (DOB: 2009-11-03)', 'CSC Assisted Verification (Demo)', 'SIMULATED_CSC_ADAPTER', 'VERIFIED', now, '2030-12-31', 'DEMO_ASSISTED_KYC', 0.98, 'DEMO-ID-JH-3003');
   insertEvidence.run('ev_lakshmi_st', 'student_lakshmi', 'ST Status', 'st_status', 'VERIFIED', 'State Caste Certificate Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2035-12-31', 'DEMO_CERTIFICATE_SIGNATURE', 0.99, 'CERT-ST-JH-48291');
   insertEvidence.run('ev_lakshmi_income', 'student_lakshmi', 'Income', 'annual_income', '145000', 'State e-District Income Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2027-03-31', 'DEMO_CERTIFICATE_VERIFY', 0.97, 'CERT-INC-JH-48291');
   insertEvidence.run('ev_lakshmi_academic', 'student_lakshmi', 'Academic', 'academic_category', 'POST_MATRIC', 'State Education Portal Adapter (Demo)', 'SIMULATED_GOV_ADAPTER', 'VERIFIED', now, '2027-05-31', 'DEMO_ENROLLMENT_CHECK', 0.98, 'ACA-JH-XI-48291');
@@ -218,7 +230,7 @@ export function seedDatabase(db: DatabaseSync): void {
     'POST_MATRIC_DEMO v0.1',
     'REVIEW REQUIRED',
     'Income mismatch detected: Profile-declared income (₹2,40,000) passes <= ₹2,50,000, while Income Certificate (₹2,80,000) exceeds ₹2,50,000.',
-    'Assigned to Scholarship Officer (Rajesh Kumar) to resolve INCOME_CONFLICT and re-evaluate.',
+    'Assigned to Scholarship Officer (Sample 5) to resolve INCOME_CONFLICT and re-evaluate.',
     now
   );
   insertRuleRes.run('rr_arjun_1', 'eval_arjun_init', 'RULE_ST_STATUS', '== VERIFIED', 'VERIFIED', 'ev_arjun_st', 'SATISFIED', 'ST Certificate CERT-ST-JH-20841 is verified.', 'None');
@@ -310,9 +322,9 @@ export function seedDatabase(db: DatabaseSync): void {
     'SETU-20841',
     'EVIDENCE_VERIFIED',
     'REVIEW REQUIRED',
-    'District Scholarship Officer Exception Queue (Rajesh Kumar)',
+    'District Scholarship Officer Exception Queue (Sample 5)',
     'Income mismatch detected between profile declaration (₹2,40,000) and certificate (₹2,80,000) across the ₹2,50,000 Post-Matric limit.',
-    'Scholarship Officer (Rajesh Kumar)',
+    'Scholarship Officer (Sample 5)',
     'Awaiting Officer resolution of INCOME_CONFLICT (or upload updated income certificate if applicable).',
     now,
     now
@@ -395,7 +407,7 @@ export function seedDatabase(db: DatabaseSync): void {
   insertNotif.run('notif_meena_1', 'student_meena', 'VERIFICATION_COMPLETED', 'All Evidence Verified', 'Your Identity, ST Status, Income (₹1,20,000), and Class 9 enrollment have been verified.', 0, '2026-09-28T10:31:00Z');
   insertNotif.run('notif_meena_2', 'student_meena', 'DBT_INITIATED', 'Sanctioned & DBT Initiated (Demo)', 'Your Pre-Matric Scholarship (₹4,500) is sanctioned and queued for DBT.', 0, '2026-09-28T10:35:00Z');
 
-  insertNotif.run('notif_arjun_1', 'student_arjun', 'EXCEPTION_CREATED', 'Action/Review Required: Income Data Conflict', 'SetuOne detected a mismatch between your profile income (₹2,40,000) and e-District income certificate (₹2,80,000). Your case is assigned to Scholarship Officer Rajesh Kumar (not rejected).', 0, '2026-09-28T10:43:00Z');
+  insertNotif.run('notif_arjun_1', 'student_arjun', 'EXCEPTION_CREATED', 'Action/Review Required: Income Data Conflict', 'SetuOne detected a mismatch between your profile income (₹2,40,000) and e-District income certificate (₹2,80,000). Your case is assigned to Scholarship Officer Sample 5 (not rejected).', 0, '2026-09-28T10:43:00Z');
 
   insertNotif.run('notif_lakshmi_1', 'student_lakshmi', 'APPLICATION_SUBMITTED', 'Assisted Application Saved (SETU-48291)', 'Your Post-Matric application was recorded at CSC Khunti (#019) with consent. Reference: SETU-48291.', 0, '2026-09-28T10:32:00Z');
 
@@ -426,7 +438,7 @@ export function seedDatabase(db: DatabaseSync): void {
     'exception',
     'student_arjun',
     'OPEN',
-    'ASSIGNED (Rajesh Kumar)',
+    'ASSIGNED (Sample 5)',
     'POST_MATRIC_DEMO v0.1',
     'exc_arjun_income'
   );

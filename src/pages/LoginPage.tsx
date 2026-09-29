@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Lock, ArrowRight, CheckCircle2, Building2, Info } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext.tsx';
+import { useLanguage } from '../contexts/LanguageContext.tsx';
 import { UserRole } from '../types/index.ts';
 import { getRoleDashboardPath } from '../components/auth/RoleGuard.tsx';
 import { SetuOneLogoIcon, SetuOneWordmark, SetuOneHeroLockup } from '../components/brand/SetuOneLogo.tsx';
+import { LanguageSelector } from '../components/brand/LanguageSelector.tsx';
 
 const ROLE_CONFIG: Record<
   UserRole,
@@ -56,6 +58,7 @@ const ROLE_CONFIG: Record<
 
 export const LoginPage: React.FC = () => {
   const { session, loginWithSimulatedCredentials, loading } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const [selectedRole, setSelectedRole] = useState<UserRole>('student');
@@ -103,15 +106,19 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-900">
-      {/* 1. Narrow Top Government Strip */}
+      {/* 1. Narrow Top Government Strip with Multilingual Switcher */}
       <div className="bg-[#0f2942] text-slate-200 border-b border-slate-800 px-4 sm:px-6 py-1.5 text-[11px] font-medium">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <span className="tracking-wide text-slate-100">
-            Ministry of Tribal Affairs • Government of India
-          </span>
-          <span className="text-slate-300">
-            National Unified Scholarship &amp; Resolution Platform
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="tracking-wide text-slate-100">
+              {t('Ministry of Tribal Affairs • Government of India')}
+            </span>
+            <span className="hidden md:inline text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-300">
+              {t('National Unified Scholarship & Resolution Platform')}
+            </span>
+          </div>
+          <LanguageSelector variant="dark" />
         </div>
       </div>
 
@@ -123,14 +130,14 @@ export const LoginPage: React.FC = () => {
             <div>
               <SetuOneWordmark className="text-lg" />
               <div className="text-[11px] text-slate-600 mt-0.5">
-                Unified Scholarship Mobile &amp; Resolution Platform
+                {t('Unified Scholarship Mobile & Resolution Platform')}
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="text-[11px] font-mono font-semibold uppercase tracking-wide px-2.5 py-1 rounded bg-teal-50 text-teal-800 border border-teal-200">
-              Demo Environment
+              {t('Demo Environment')}
             </span>
           </div>
         </div>
@@ -146,13 +153,13 @@ export const LoginPage: React.FC = () => {
           <div className="bg-white border border-slate-200 rounded-lg shadow-xs p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <h2 className="text-sm font-bold text-[#0f2942]">Portal Sign In</h2>
+                <h2 className="text-sm font-bold text-[#0f2942]">{t('Portal Sign In')}</h2>
                 <p className="text-[11px] text-slate-500">
-                  Simulated authentication for SIH prototype evaluation
+                  {t('Simulated authentication for SIH prototype evaluation')}
                 </p>
               </div>
               <span className="text-[10px] font-mono font-semibold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
-                Demo Environment
+                {t('Demo Environment')}
               </span>
             </div>
 
@@ -178,7 +185,7 @@ export const LoginPage: React.FC = () => {
                         : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
-                    {ROLE_CONFIG[role].tabLabel}
+                    {t(ROLE_CONFIG[role].tabLabel)}
                   </button>
                 );
               })}
@@ -188,10 +195,10 @@ export const LoginPage: React.FC = () => {
             <div className="bg-slate-50 border border-slate-200 rounded-md px-3 py-2 space-y-0.5">
               <div className="flex items-center gap-1.5 text-xs font-semibold text-[#0f2942]">
                 <ShieldCheck className="w-3.5 h-3.5 text-teal-700 shrink-0" />
-                <span>{activeConfig.methodTitle}</span>
+                <span>{t(activeConfig.methodTitle)}</span>
               </div>
               <p className="text-[11px] text-slate-600 leading-snug">
-                {activeConfig.simulationNote}
+                {t(activeConfig.simulationNote)}
               </p>
             </div>
 
@@ -202,7 +209,7 @@ export const LoginPage: React.FC = () => {
                   htmlFor="login-identifier"
                   className="block text-xs font-semibold text-slate-700 mb-1"
                 >
-                  {activeConfig.identifierLabel}
+                  {t(activeConfig.identifierLabel)}
                 </label>
                 <input
                   id="login-identifier"
@@ -218,14 +225,14 @@ export const LoginPage: React.FC = () => {
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <label htmlFor="login-otp" className="block text-xs font-semibold text-slate-700">
-                    {activeConfig.otpLabel}
+                    {t(activeConfig.otpLabel)}
                   </label>
                   <button
                     type="button"
                     onClick={handleSendSimulatedOtp}
                     className="text-[11px] font-semibold text-teal-700 hover:text-teal-800 underline cursor-pointer"
                   >
-                    Resend Simulated OTP
+                    {t('Resend Simulated OTP')}
                   </button>
                 </div>
                 <div className="relative">
@@ -243,7 +250,7 @@ export const LoginPage: React.FC = () => {
                 {otpRequested && (
                   <p className="mt-1 text-[11px] text-teal-800 flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3 text-teal-700 shrink-0" />
-                    <span>Simulated OTP pre-filled (123456)</span>
+                    <span>{t('Simulated OTP pre-filled (123456)')}</span>
                   </p>
                 )}
               </div>
@@ -294,7 +301,7 @@ export const LoginPage: React.FC = () => {
                 <span>
                   {loading
                     ? 'Verifying Simulated Session...'
-                    : `Sign In to ${activeConfig.tabLabel} Portal`}
+                    : t(`Sign In to ${activeConfig.tabLabel} Portal`)}
                 </span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
@@ -306,7 +313,7 @@ export const LoginPage: React.FC = () => {
             <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1">
               <div className="flex items-center gap-1.5 text-xs font-bold text-[#0f2942]">
                 <Building2 className="w-3.5 h-3.5 text-teal-700 shrink-0" />
-                <span>Assisted Access (CSC)</span>
+                <span>{t('Assisted Access (CSC)')}</span>
               </div>
               <p className="text-[11px] text-slate-600 leading-snug">
                 Students applying via Gram Panchayat / CSC receive a portable tracking token (e.g.{' '}
@@ -317,7 +324,7 @@ export const LoginPage: React.FC = () => {
             <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-2xs space-y-1">
               <div className="flex items-center gap-1.5 text-xs font-bold text-[#0f2942]">
                 <Info className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                <span>Prototype Notice</span>
+                <span>{t('Prototype Notice')}</span>
               </div>
               <p className="text-[11px] text-slate-600 leading-snug">
                 Simulated session state (<span className="font-mono">sessionStorage</span>). No live Aadhaar, DigiLocker, or official government SSO integration.

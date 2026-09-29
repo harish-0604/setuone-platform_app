@@ -2,7 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogOut, ShieldAlert, X } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext.tsx';
+import { useLanguage } from '../contexts/LanguageContext.tsx';
 import { SetuOneLogoIcon, SetuOneWordmark } from '../components/brand/SetuOneLogo.tsx';
+import { LanguageSelector } from '../components/brand/LanguageSelector.tsx';
 
 export { SetuOneLogoIcon, SetuOneWordmark };
 
@@ -27,6 +29,7 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
   children,
 }) => {
   const { session, logout, accessDeniedNotice, setAccessDeniedNotice } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -36,20 +39,25 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-900">
-      {/* 1. Narrow Top Government Strip */}
-      <div className="bg-[#0f2942] text-slate-200 border-b border-slate-800 px-4 sm:px-6 py-1.5 text-[11px] font-medium">
-        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <span className="tracking-wide text-slate-100">
-            Ministry of Tribal Affairs • Government of India
-          </span>
-          <span className="text-slate-300">
-            National Unified Scholarship &amp; Resolution Platform
-          </span>
+      <div className="sticky top-0 z-30 shadow-2xs">
+        {/* 1. Narrow Top Government Strip with Multilingual Switcher */}
+        <div className="bg-[#0f2942] text-slate-200 border-b border-slate-800 px-4 sm:px-6 py-1.5 text-[11px] font-medium">
+          <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="tracking-wide text-slate-100">
+                {t('Ministry of Tribal Affairs • Government of India')}
+              </span>
+              <span className="hidden md:inline text-slate-500">|</span>
+              <span className="hidden sm:inline text-slate-300">
+                {t('National Unified Scholarship & Resolution Platform')}
+              </span>
+            </div>
+            <LanguageSelector variant="dark" />
+          </div>
         </div>
-      </div>
 
-      {/* 2. SetuOne Brand Header */}
-      <header className="sticky top-0 z-30 bg-white border-b border-slate-200 px-4 sm:px-6 py-3 shadow-2xs">
+        {/* 2. SetuOne Brand Header */}
+        <header className="bg-white border-b border-slate-200 px-4 sm:px-6 py-3">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
           {/* Left: SetuOne Logo + Name + Subtitle */}
           <a href="/" className="flex items-center gap-3 group">
@@ -58,11 +66,11 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
               <div className="flex items-center gap-2">
                 <SetuOneWordmark className="text-xl" />
                 <span className="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
-                  Demo Environment
+                  {t('Demo Environment')}
                 </span>
               </div>
               <div className="text-xs text-slate-600 mt-0.5">
-                Unified Scholarship Mobile &amp; Resolution Platform
+                {t('Unified Scholarship Mobile & Resolution Platform')}
               </div>
             </div>
           </a>
@@ -77,7 +85,7 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
                 <div className="text-xs font-bold text-slate-900">{session.fullName}</div>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="inline-block text-[10px] font-semibold uppercase tracking-wide text-teal-800 bg-teal-50 border border-teal-200 px-1.5 py-0.2 rounded">
-                    {portalLabel}
+                    {t(portalLabel)}
                   </span>
                 </div>
               </div>
@@ -89,12 +97,13 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
                 className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-md transition-colors whitespace-nowrap cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span>Sign Out</span>
+                <span>{t('Sign Out')}</span>
               </button>
             </div>
           )}
         </div>
       </header>
+      </div>
 
       {/* Optional Horizontal Navigation Tabs Strip if provided by page */}
       {navItems.length > 0 && (
@@ -112,7 +121,7 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
                     : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
                 }`}
               >
-                {item.label}
+                {t(item.label)}
               </button>
             ))}
           </div>

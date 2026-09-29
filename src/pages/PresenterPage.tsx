@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext.tsx';
 import { SetuOneLogoIcon, SetuOneWordmark } from '../components/brand/SetuOneLogo.tsx';
+import { LanguageSelector } from '../components/brand/LanguageSelector.tsx';
 
 interface DemoStateSnapshot {
   databaseEngine: string;
@@ -118,15 +119,19 @@ export const PresenterPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-900" data-testid="presenter-page">
-      {/* 1. Narrow Top Government Strip */}
+      {/* 1. Narrow Top Government Strip with Multilingual Switcher */}
       <div className="bg-[#0f2942] text-slate-200 border-b border-slate-800 px-4 sm:px-6 py-1.5 text-[11px] font-medium">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <span className="tracking-wide text-slate-100">
-            Ministry of Tribal Affairs • Government of India
-          </span>
-          <span className="text-slate-300">
-            National Unified Scholarship &amp; Resolution Platform
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="tracking-wide text-slate-100">
+              Ministry of Tribal Affairs • Government of India
+            </span>
+            <span className="hidden md:inline text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-300">
+              National Unified Scholarship &amp; Resolution Platform
+            </span>
+          </div>
+          <LanguageSelector variant="dark" />
         </div>
       </div>
 
@@ -244,13 +249,13 @@ export const PresenterPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-            {/* 1. MEENA — CLEAN CASE */}
+            {/* 1. SAMPLE 1 (MEENA — CLEAN CASE) */}
             <div className="bg-white border border-slate-200 rounded-lg p-3.5 shadow-2xs flex flex-col justify-between gap-3">
               <div className="space-y-1">
                 <div className="text-[10px] font-mono text-teal-800 font-bold uppercase">
                   Student • Pre-Matric
                 </div>
-                <div className="font-bold text-sm text-[#0f2942]">Meena Murmu</div>
+                <div className="font-bold text-sm text-[#0f2942]">Sample 1</div>
                 <p className="text-xs text-slate-600">
                   Clean Case: All 6 evidence items verified. Income ₹1,20,000 (&lt;= ₹2,50,000). Straight-through processing.
                 </p>
@@ -263,7 +268,7 @@ export const PresenterPage: React.FC = () => {
                   onClick={() => handlePersonaShortcut('meena', '/api/demo/scenario/meena', false)}
                   className="flex-1 py-2 px-2.5 bg-[#0f2942] hover:bg-slate-800 text-white text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer"
                 >
-                  MEENA — CLEAN CASE
+                  SAMPLE 1 — CLEAN CASE
                 </button>
                 <button
                   type="button"
@@ -276,13 +281,13 @@ export const PresenterPage: React.FC = () => {
               </div>
             </div>
 
-            {/* 2. ARJUN — INCOME CONFLICT */}
+            {/* 2. SAMPLE 2 (ARJUN — INCOME CONFLICT) */}
             <div className="bg-amber-50/40 border border-amber-300 rounded-lg p-3.5 shadow-2xs flex flex-col justify-between gap-3">
               <div className="space-y-1">
                 <div className="text-[10px] font-mono text-amber-900 font-bold uppercase">
                   Student • Post-Matric
                 </div>
-                <div className="font-bold text-sm text-[#0f2942]">Arjun Murmu</div>
+                <div className="font-bold text-sm text-[#0f2942]">Sample 2</div>
                 <p className="text-xs text-slate-600">
                   Income Conflict: Profile ₹2,40,000 vs Certificate ₹2,80,000 straddling ₹2,50,000 threshold.
                 </p>
@@ -295,7 +300,7 @@ export const PresenterPage: React.FC = () => {
                   onClick={() => handlePersonaShortcut('arjun', '/api/demo/scenario/arjun', false)}
                   className="flex-1 py-2 px-2.5 bg-[#0f2942] hover:bg-slate-800 text-white text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer"
                 >
-                  ARJUN — INCOME CONFLICT
+                  SAMPLE 2 — INCOME CONFLICT
                 </button>
                 <button
                   type="button"
@@ -308,13 +313,13 @@ export const PresenterPage: React.FC = () => {
               </div>
             </div>
 
-            {/* 3. LAKSHMI — ASSISTED ACCESS */}
+            {/* 3. SAMPLE 3 (LAKSHMI — ASSISTED ACCESS) */}
             <div className="bg-white border border-slate-200 rounded-lg p-3.5 shadow-2xs flex flex-col justify-between gap-3">
               <div className="space-y-1">
                 <div className="text-[10px] font-mono text-teal-800 font-bold uppercase">
                   Student • CSC Assisted
                 </div>
-                <div className="font-bold text-sm text-[#0f2942]">Lakshmi Hembram</div>
+                <div className="font-bold text-sm text-[#0f2942]">Sample 3</div>
                 <p className="text-xs text-slate-600">
                   Assisted Access via CSC Khunti with recorded consent &amp; portable reference SETU-48291.
                 </p>
@@ -327,7 +332,7 @@ export const PresenterPage: React.FC = () => {
                   onClick={() => handlePersonaShortcut('lakshmi', '/api/demo/scenario/lakshmi', false)}
                   className="flex-1 py-2 px-2.5 bg-[#0f2942] hover:bg-slate-800 text-white text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer"
                 >
-                  LAKSHMI — ASSISTED ACCESS
+                  SAMPLE 3 — ASSISTED ACCESS
                 </button>
                 <button
                   type="button"
@@ -340,15 +345,15 @@ export const PresenterPage: React.FC = () => {
               </div>
             </div>
 
-            {/* 4. KAMALA — GUARDIAN */}
+            {/* 4. SAMPLE 4 (KAMALA — GUARDIAN) */}
             <div className="bg-white border border-slate-200 rounded-lg p-3.5 shadow-2xs flex flex-col justify-between gap-3">
               <div className="space-y-1">
                 <div className="text-[10px] font-mono text-teal-800 font-bold uppercase">
                   Guardian • Linked Children
                 </div>
-                <div className="font-bold text-sm text-[#0f2942]">Kamala Devi</div>
+                <div className="font-bold text-sm text-[#0f2942]">Sample 4</div>
                 <p className="text-xs text-slate-600">
-                  Guardian view linked strictly to Meena and Arjun only. Cannot view Lakshmi or unlinked records.
+                  Guardian view linked strictly to Sample 1 and Sample 2 only. Cannot view Sample 3 or unlinked records.
                 </p>
               </div>
               <div className="flex items-center gap-1.5 pt-1">
@@ -359,7 +364,7 @@ export const PresenterPage: React.FC = () => {
                   onClick={() => handlePersonaShortcut('kamala', '/api/demo/scenario/kamala', false)}
                   className="flex-1 py-2 px-2.5 bg-[#0f2942] hover:bg-slate-800 text-white text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer"
                 >
-                  KAMALA — GUARDIAN
+                  SAMPLE 4 — GUARDIAN
                 </button>
                 <button
                   type="button"
@@ -372,15 +377,15 @@ export const PresenterPage: React.FC = () => {
               </div>
             </div>
 
-            {/* 5. RAJESH — OFFICER */}
+            {/* 5. SAMPLE 5 (RAJESH — OFFICER) */}
             <div className="bg-white border border-slate-200 rounded-lg p-3.5 shadow-2xs flex flex-col justify-between gap-3">
               <div className="space-y-1">
                 <div className="text-[10px] font-mono text-teal-800 font-bold uppercase">
                   Scholarship Officer
                 </div>
-                <div className="font-bold text-sm text-[#0f2942]">Rajesh Kumar</div>
+                <div className="font-bold text-sm text-[#0f2942]">Sample 5</div>
                 <p className="text-xs text-slate-600">
-                  Officer Exception Command Centre. Assigned Arjun&apos;s open INCOME_CONFLICT review case.
+                  Officer Exception Command Centre. Assigned Sample 2&apos;s open INCOME_CONFLICT review case.
                 </p>
               </div>
               <div className="flex items-center gap-1.5 pt-1">
@@ -391,7 +396,7 @@ export const PresenterPage: React.FC = () => {
                   onClick={() => handlePersonaShortcut('rajesh', '/api/demo/scenario/rajesh', false)}
                   className="flex-1 py-2 px-2.5 bg-[#0f2942] hover:bg-slate-800 text-white text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer"
                 >
-                  RAJESH — OFFICER
+                  SAMPLE 5 — OFFICER
                 </button>
                 <button
                   type="button"
@@ -442,7 +447,7 @@ export const PresenterPage: React.FC = () => {
                   Restore Clean Baseline SQLite State
                 </div>
                 <p className="text-xs text-slate-600">
-                  Drops and recreates all 24 SQLite tables and re-runs seed_data: restores Meena clean state, Arjun OPEN income conflict (₹2,40,000 vs ₹2,80,000), Lakshmi assisted state (SETU-48291), Kamala guardian links, and Officer queue.
+                  Drops and recreates all 24 SQLite tables and re-runs seed_data: restores Sample 1 clean state, Sample 2 OPEN income conflict (₹2,40,000 vs ₹2,80,000), Sample 3 assisted state (SETU-48291), Sample 4 guardian links, and Sample 5 officer queue.
                 </p>
               </div>
               <button
@@ -592,7 +597,7 @@ export const PresenterPage: React.FC = () => {
 
                 <div>
                   <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
-                    Guardian-Student Links (Kamala Devi → Meena &amp; Arjun Only)
+                    Guardian-Student Links (Sample 4 → Sample 1 &amp; Sample 2 Only)
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {snapshot.guardianLinks.map((g, idx) => (

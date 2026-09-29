@@ -41,7 +41,7 @@ async function runPhase4Verification() {
 
   // 3. Authenticate as Officer Rajesh Kumar & inspect Exception Command Centre
   const rajeshLogin = await (await fetch(`${BASE_URL}/api/demo/scenario/rajesh`, { method: 'POST' })).json();
-  assert.equal(rajeshLogin.session.fullName, 'Rajesh Kumar');
+  assert.equal(rajeshLogin.session.fullName, 'Sample 5');
   const officerHeaders = {
     'Content-Type': 'application/json',
     'x-demo-user-id': rajeshLogin.session.userId,

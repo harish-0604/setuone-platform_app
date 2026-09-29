@@ -1,7 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { DemoSession, UserRole } from '../types/index.ts';
 
-const DEMO_SESSION_STORAGE_KEY = 'setuone_demo_session_v2';
+const DEMO_SESSION_STORAGE_KEY = 'setuone_demo_session_v5';
+const LEGACY_SESSION_KEYS = [
+  'setuone_demo_session_v1',
+  'setuone_demo_session_v2',
+  'setuone_demo_session_v3',
+  'setuone_demo_session_v4',
+];
 
 interface LoginParams {
   role: UserRole;
@@ -25,6 +31,9 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [session, setSession] = useState<DemoSession | null>(() => {
     try {
+      for (const oldKey of LEGACY_SESSION_KEYS) {
+        window.sessionStorage.removeItem(oldKey);
+      }
       const raw = window.sessionStorage.getItem(DEMO_SESSION_STORAGE_KEY);
       if (!raw) return null;
       return JSON.parse(raw) as DemoSession;
@@ -47,6 +56,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Ignore storage errors in restricted environments
     }
   }, []);
+
+  // Automatically sync session with backend SQLite state on mount so persona names (Sample 1..5) are always fresh
+  useEffect(() => {
+    if (!session?.userId) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/auth/session', {
+          headers: {
+            'x-demo-user-id': session.userId,
+            'x-demo-role': session.role,
+          },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!cancelled && data?.session && data.session.fullName !== session.fullName) {
+          persistSession(data.session as DemoSession);
+        }
+      } catch {
+        // Ignore transient network errors
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [session?.userId, session?.role, session?.fullName, persistSession]);
 
   useEffect(() => {
     // Sync across storage changes if needed

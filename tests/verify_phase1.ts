@@ -87,11 +87,11 @@ async function runVerification() {
 
   // Ensure PresenterPage has all 7 required buttons
   const requiredButtons = [
-    'MEENA — CLEAN CASE',
-    'ARJUN — INCOME CONFLICT',
-    'LAKSHMI — ASSISTED ACCESS',
-    'KAMALA — GUARDIAN',
-    'RAJESH — OFFICER',
+    'SAMPLE 1 — CLEAN CASE',
+    'SAMPLE 2 — INCOME CONFLICT',
+    'SAMPLE 3 — ASSISTED ACCESS',
+    'SAMPLE 4 — GUARDIAN',
+    'SAMPLE 5 — OFFICER',
     'API OUTAGE',
     'RESET DEMO',
   ];

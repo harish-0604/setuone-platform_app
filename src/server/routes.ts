@@ -105,7 +105,7 @@ export function runDeterministicEligibilityEvaluation(studentId: string, schemeI
     evidence_ids: string;
   }>;
 
-  const evalId = `eval_${studentId}_${Date.now()}`;
+  const evalId = `eval_${studentId}_${schemeId}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
   const nowIso = new Date().toISOString();
 
   let overallResult: 'CONDITIONS SATISFIED' | 'REVIEW REQUIRED' | 'CONDITION NOT SATISFIED' =
@@ -326,9 +326,9 @@ apiRouter.post('/auth/login', (req: Request, res: Response) => {
   let matchedUserId = 'user_arjun';
 
   if (normalizedRole === 'student') {
-    if (cleanId.includes('MEENA') || cleanId === '9876500001' || cleanId === 'SETU-10492') {
+    if (cleanId.includes('MEENA') || cleanId.includes('SAMPLE 1') || cleanId.includes('SAMPLE1') || cleanId === '9876500001' || cleanId === 'SETU-10492') {
       matchedUserId = 'user_meena';
-    } else if (cleanId.includes('LAKSHMI') || cleanId === '9876500003' || cleanId === 'SETU-48291') {
+    } else if (cleanId.includes('LAKSHMI') || cleanId.includes('SAMPLE 3') || cleanId.includes('SAMPLE3') || cleanId === '9876500003' || cleanId === 'SETU-48291') {
       matchedUserId = 'user_lakshmi';
     } else {
       matchedUserId = 'user_arjun';
@@ -895,7 +895,7 @@ apiRouter.post('/exceptions/:exception_id/resolve', (req: Request, res: Response
   const schemeId = String(exc.scheme_id);
   const resolvedIncome = Number(accepted_value ?? 240000);
   const sourceLabel = accepted_source || (resolvedIncome <= 250000 ? 'Verified Profile / Corrected Income Certificate' : 'State e-District Income Certificate (Confirmed)');
-  const officerName = 'RAJESH KUMAR';
+  const officerName = 'SAMPLE 5';
   const timeShort = formatTimeShort();
   const nowIso = new Date().toISOString();
 
@@ -958,7 +958,7 @@ apiRouter.post('/exceptions/:exception_id/resolve', (req: Request, res: Response
       SET current_stage = 'SANCTIONED',
           status = 'CONDITIONS SATISFIED',
           where_is_it = 'State Tribal Welfare Sanction & DBT Desk',
-          why_here = 'Officer Rajesh Kumar resolved INCOME_CONFLICT (confirmed ₹2,40,000 <= ₹2,50,000 threshold). Eligibility re-evaluation passed.',
+          why_here = 'Officer Sample 5 resolved INCOME_CONFLICT (confirmed ₹2,40,000 <= ₹2,50,000 threshold). Eligibility re-evaluation passed.',
           owner = 'DBT Disbursement System',
           next_action = 'No student action required. Sanctioned after officer resolution and queued for DBT.',
           updated_at = ?
@@ -978,7 +978,7 @@ apiRouter.post('/exceptions/:exception_id/resolve', (req: Request, res: Response
       SET current_stage = 'ELIGIBILITY_CHECKED',
           status = 'CONDITION NOT SATISFIED',
           where_is_it = 'Student Portal — Eligibility Outcome Notice',
-          why_here = 'Officer Rajesh Kumar confirmed authoritative certificate income of ₹2,80,000, which exceeds the ₹2,50,000 Post-Matric threshold.',
+          why_here = 'Officer Sample 5 confirmed authoritative certificate income of ₹2,80,000, which exceeds the ₹2,50,000 Post-Matric threshold.',
           owner = 'Student (Re-Review / Alternative Scheme Option)',
           next_action = 'Confirmed income (₹2,80,000) exceeds Post-Matric limit (₹2,50,000). Check Top Class / National Scholarship (threshold ₹8,00,000) or submit revised income certificate.',
           updated_at = ?
@@ -1019,7 +1019,7 @@ apiRouter.post('/exceptions/:exception_id/resolve', (req: Request, res: Response
     studentId,
     'EXCEPTION_RESOLVED',
     `Officer Resolution Complete: ${newEvaluation.result}`,
-    `Scholarship Officer Rajesh Kumar resolved your income conflict (Confirmed: ₹${resolvedIncome.toLocaleString('en-IN')}). Automatic re-evaluation result: ${newEvaluation.result}.`,
+    `Scholarship Officer Sample 5 resolved your income conflict (Confirmed: ₹${resolvedIncome.toLocaleString('en-IN')}). Automatic re-evaluation result: ${newEvaluation.result}.`,
     0,
     nowIso
   );
@@ -1075,7 +1075,7 @@ apiRouter.post('/exceptions/:exception_id/request-info', (req: Request, res: Res
     String(exc.student_id),
     'ACTION_REQUIRED',
     'Officer Requested Additional Clarification',
-    'Scholarship Officer Rajesh Kumar requested clarification regarding your income certificate mismatch.',
+    'Scholarship Officer Sample 5 requested clarification regarding your income certificate mismatch.',
     0,
     nowIso
   );
@@ -1106,7 +1106,7 @@ apiRouter.post('/exceptions/:exception_id/escalate', (req: Request, res: Respons
   `).run(
     `audit_esc_${Date.now()}`,
     formatTimeShort(),
-    'RAJESH KUMAR',
+    'SAMPLE 5',
     'Case escalated to State Nodal Appellate Officer',
     'exception',
     String(exc.student_id),
@@ -1258,7 +1258,7 @@ apiRouter.post('/demo/reset', (_req: Request, res: Response) => {
   res.json({
     status: 'RESET_COMPLETE',
     message:
-      'SQLite database dropped, recreated, and re-seeded to clean baseline (Meena clean case, Arjun income conflict, Lakshmi assisted access, Kamala guardian links, Rajesh officer queue).',
+      'SQLite database dropped, recreated, and re-seeded to clean baseline (Sample 1 clean case, Sample 2 income conflict, Sample 3 assisted access, Sample 4 guardian links, Sample 5 officer queue).',
     timestamp: new Date().toISOString(),
   });
 });

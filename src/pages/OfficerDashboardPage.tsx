@@ -523,7 +523,7 @@ export const OfficerDashboardPage: React.FC = () => {
                     <div className="text-[10px] font-bold uppercase text-slate-500">Assigned Owner</div>
                     <div className="text-xs font-bold text-[#0f2942]">{selectedCase.owner}</div>
                     <div className="text-[11px] text-slate-600">
-                      Officer: Rajesh Kumar • Case Age: <span className="font-mono">{selectedCase.case_age}</span>
+                      Officer: Sample 5 • Case Age: <span className="font-mono">{selectedCase.case_age}</span>
                     </div>
                   </div>
 

@@ -47,7 +47,7 @@ async function runPhase2Verification() {
   const { session: meenaSession } = (await meenaLoginRes.json()) as {
     session: { userId: string; role: string; studentId: string; fullName: string };
   };
-  assert.equal(meenaSession.fullName, 'Meena Murmu');
+  assert.equal(meenaSession.fullName, 'Sample 1');
 
   const meenaDashRes = await fetch(`${BASE_URL}/api/students/${meenaSession.studentId}/dashboard`, {
     headers: {
@@ -71,7 +71,7 @@ async function runPhase2Verification() {
   const { session: arjunSession } = (await arjunLoginRes.json()) as {
     session: { userId: string; role: string; studentId: string; fullName: string };
   };
-  assert.equal(arjunSession.fullName, 'Arjun Murmu');
+  assert.equal(arjunSession.fullName, 'Sample 2');
 
   const arjunDashRes = await fetch(`${BASE_URL}/api/students/${arjunSession.studentId}/dashboard`, {
     headers: {
@@ -92,7 +92,7 @@ async function runPhase2Verification() {
   const { session: lakshmiSession } = (await lakshmiLoginRes.json()) as {
     session: { userId: string; role: string; studentId: string; fullName: string };
   };
-  assert.equal(lakshmiSession.fullName, 'Lakshmi Hembram');
+  assert.equal(lakshmiSession.fullName, 'Sample 3');
 
   const lakshmiDashRes = await fetch(`${BASE_URL}/api/students/${lakshmiSession.studentId}/dashboard`, {
     headers: {
@@ -112,7 +112,7 @@ async function runPhase2Verification() {
   const { session: kamalaSession } = (await kamalaLoginRes.json()) as {
     session: { userId: string; role: string; guardianId: string; fullName: string };
   };
-  assert.equal(kamalaSession.fullName, 'Kamala Devi');
+  assert.equal(kamalaSession.fullName, 'Sample 4');
 
   const kamalaDashRes = await fetch(`${BASE_URL}/api/guardians/${kamalaSession.guardianId}/dashboard`, {
     headers: {
@@ -124,7 +124,7 @@ async function runPhase2Verification() {
   const kamalaDash = await kamalaDashRes.json();
   assert.equal(kamalaDash.linkedChildrenCount, 2);
   const childNames = kamalaDash.linkedChildren.map((c: { full_name: string }) => c.full_name).sort();
-  assert.deepEqual(childNames, ['Arjun Murmu', 'Meena Murmu'], 'Guardian must see only Arjun and Meena');
+  assert.deepEqual(childNames, ['Sample 1', 'Sample 2'], 'Guardian must see only Sample 1 and Sample 2');
 
   // Verify Kamala cannot access unlinked Lakshmi record
   const kamalaLakshmiAttempt = await fetch(`${BASE_URL}/api/students/student_lakshmi/dashboard`, {

@@ -442,17 +442,17 @@ export const StudentDashboardPage: React.FC = () => {
                   {
                     studentId: 'student_arjun',
                     identifier: '9876500002',
-                    label: 'Arjun Murmu — Income Conflict (₹2.4L vs ₹2.8L)',
+                    label: 'Sample 2 — Income Conflict (₹2.4L vs ₹2.8L)',
                   },
                   {
                     studentId: 'student_meena',
                     identifier: '9876500001',
-                    label: 'Meena Murmu — Clean Case (Straight-Through)',
+                    label: 'Sample 1 — Clean Case (Straight-Through)',
                   },
                   {
                     studentId: 'student_lakshmi',
                     identifier: 'SETU-48291',
-                    label: 'Lakshmi Hembram — Assisted Access (SETU-48291)',
+                    label: 'Sample 3 — Assisted Access (SETU-48291)',
                   },
                 ].map((item) => {
                   const isCurrent = data.student.id === item.studentId;
@@ -797,11 +797,11 @@ export const StudentDashboardPage: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="text-sm font-bold text-[#0f2942] font-mono tabular-nums">
-                        {verifiedEvidenceCount} of {totalEvidenceCount} Evidence Items Verified
+                        {`${verifiedEvidenceCount} of ${totalEvidenceCount} Evidence Items Verified`}
                       </div>
                       {conflictEvidenceCount > 0 && (
                         <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-red-50 text-red-800 border border-red-200">
-                          {conflictEvidenceCount} Conflict
+                          {`${conflictEvidenceCount} Conflict`}
                         </span>
                       )}
                     </div>
@@ -958,7 +958,7 @@ export const StudentDashboardPage: React.FC = () => {
                             onClick={() => handleRunEligibilityCheck(sch.id)}
                             className="w-full py-1.5 px-3 text-xs font-semibold rounded bg-[#0f2942] hover:bg-slate-800 text-white transition-colors cursor-pointer"
                           >
-                            Check Eligibility ({sch.active_rule_version})
+                            {`Check Eligibility (${sch.active_rule_version})`}
                           </button>
                         </div>
                       );
