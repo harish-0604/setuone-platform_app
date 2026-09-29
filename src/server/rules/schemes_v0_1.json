@@ -1,0 +1,191 @@
+[
+  {
+    "rule_set_id": "PRE_MATRIC_DEMO",
+    "scheme_id": "SCH_PRE_MATRIC",
+    "scheme": "Pre-Matric",
+    "version": "v0.1",
+    "source_label": "Prototype Rules",
+    "effective_date": "2026-01-01",
+    "validation_status": "DEMO - PENDING OFFICIAL GUIDELINE VALIDATION",
+    "badge": "DEMO RULE — NOT AUTHORITATIVE",
+    "description": "Pre-Matric Scholarship for ST students studying in Classes IX and X.",
+    "benefit_summary": "₹4,500 per annum (Prototype threshold)",
+    "rules": [
+      {
+        "id": "RULE_ST_STATUS",
+        "field": "st_status",
+        "operator": "==",
+        "value": "VERIFIED",
+        "description": "Verified Scheduled Tribe (ST) community certificate"
+      },
+      {
+        "id": "RULE_INCOME",
+        "field": "annual_income",
+        "operator": "<=",
+        "value": 250000,
+        "description": "Annual family income from all sources up to ₹2,50,000"
+      },
+      {
+        "id": "RULE_ACADEMIC_LEVEL",
+        "field": "academic_category",
+        "operator": "==",
+        "value": "PRE_MATRIC",
+        "description": "Enrolled full-time in Class 9 or Class 10"
+      },
+      {
+        "id": "RULE_NO_OVERLAP",
+        "field": "existing_scholarship_benefit",
+        "operator": "==",
+        "value": 0,
+        "description": "Not receiving another central/state ST scholarship simultaneously"
+      }
+    ]
+  },
+  {
+    "rule_set_id": "POST_MATRIC_DEMO",
+    "scheme_id": "SCH_POST_MATRIC",
+    "scheme": "Post-Matric",
+    "version": "v0.1",
+    "source_label": "Prototype Rules",
+    "effective_date": "2026-01-01",
+    "validation_status": "DEMO - PENDING OFFICIAL GUIDELINE VALIDATION",
+    "badge": "DEMO RULE — NOT AUTHORITATIVE",
+    "description": "Post-Matric Scholarship for ST students in Class XI through Post-Graduation.",
+    "benefit_summary": "₹18,000 per annum + Compulsory Tuition Fee (Prototype threshold)",
+    "rules": [
+      {
+        "id": "RULE_ST_STATUS",
+        "field": "st_status",
+        "operator": "==",
+        "value": "VERIFIED",
+        "description": "Verified Scheduled Tribe (ST) community certificate"
+      },
+      {
+        "id": "RULE_INCOME",
+        "field": "annual_income",
+        "operator": "<=",
+        "value": 250000,
+        "description": "Annual family income from all sources up to ₹2,50,000"
+      },
+      {
+        "id": "RULE_INSTITUTION",
+        "field": "institution_verified",
+        "operator": "==",
+        "value": 1,
+        "description": "Recognized post-matric institution with verified AISHE/UDISE code"
+      },
+      {
+        "id": "RULE_NO_OVERLAP",
+        "field": "existing_scholarship_benefit",
+        "operator": "==",
+        "value": 0,
+        "description": "No duplicate active Post-Matric scholarship benefit"
+      }
+    ]
+  },
+  {
+    "rule_set_id": "TOP_CLASS_DEMO",
+    "scheme_id": "SCH_TOP_CLASS",
+    "scheme": "Top Class / National Scholarship",
+    "version": "v0.1",
+    "source_label": "Prototype Rules",
+    "effective_date": "2026-01-01",
+    "validation_status": "DEMO - PENDING OFFICIAL GUIDELINE VALIDATION",
+    "badge": "DEMO RULE — NOT AUTHORITATIVE",
+    "description": "National Scholarship for Higher Education (Top Class) for ST students in notified premier institutions.",
+    "benefit_summary": "Full Tuition + Living Allowance + Books/Computer (Prototype threshold)",
+    "rules": [
+      {
+        "id": "RULE_ST_STATUS",
+        "field": "st_status",
+        "operator": "==",
+        "value": "VERIFIED",
+        "description": "Verified Scheduled Tribe (ST) community certificate"
+      },
+      {
+        "id": "RULE_INCOME",
+        "field": "annual_income",
+        "operator": "<=",
+        "value": 800000,
+        "description": "Annual family income from all sources up to ₹8,00,000"
+      },
+      {
+        "id": "RULE_ACADEMIC_LEVEL",
+        "field": "academic_category",
+        "operator": "==",
+        "value": "TOP_CLASS_INSTITUTE",
+        "description": "Admitted to a Ministry-notified Top Class Premier Institution"
+      }
+    ]
+  },
+  {
+    "rule_set_id": "FELLOWSHIP_DEMO",
+    "scheme_id": "SCH_FELLOWSHIP",
+    "scheme": "National Fellowship",
+    "version": "v0.1",
+    "source_label": "Prototype Rules",
+    "effective_date": "2026-01-01",
+    "validation_status": "DEMO - PENDING OFFICIAL GUIDELINE VALIDATION",
+    "badge": "DEMO RULE — NOT AUTHORITATIVE",
+    "description": "National Fellowship and Scholarship for Higher Education of ST Students pursuing M.Phil / Ph.D.",
+    "benefit_summary": "JRF ₹37,000/mo · SRF ₹42,000/mo (Prototype threshold)",
+    "rules": [
+      {
+        "id": "RULE_ST_STATUS",
+        "field": "st_status",
+        "operator": "==",
+        "value": "VERIFIED",
+        "description": "Verified Scheduled Tribe (ST) community certificate"
+      },
+      {
+        "id": "RULE_ACADEMIC_LEVEL",
+        "field": "academic_category",
+        "operator": "==",
+        "value": "DOCTORAL_RESEARCH",
+        "description": "Registered for full-time M.Phil. or Ph.D. degree at a recognized university"
+      },
+      {
+        "id": "RULE_INCOME",
+        "field": "annual_income",
+        "operator": "<=",
+        "value": 600000,
+        "description": "Annual family income threshold up to ₹6,00,000"
+      }
+    ]
+  },
+  {
+    "rule_set_id": "NOS_DEMO",
+    "scheme_id": "SCH_OVERSEAS",
+    "scheme": "National Overseas Scholarship",
+    "version": "v0.1",
+    "source_label": "Prototype Rules",
+    "effective_date": "2026-01-01",
+    "validation_status": "DEMO - PENDING OFFICIAL GUIDELINE VALIDATION",
+    "badge": "DEMO RULE — NOT AUTHORITATIVE",
+    "description": "Financial assistance to selected ST students for pursuing Master's and Ph.D. studies abroad.",
+    "benefit_summary": "USD $15,400/yr Maintenance + Tuition + Airfare (Prototype threshold)",
+    "rules": [
+      {
+        "id": "RULE_ST_STATUS",
+        "field": "st_status",
+        "operator": "==",
+        "value": "VERIFIED",
+        "description": "Verified Scheduled Tribe (ST) community certificate"
+      },
+      {
+        "id": "RULE_INCOME",
+        "field": "annual_income",
+        "operator": "<=",
+        "value": 600000,
+        "description": "Annual family income from all sources up to ₹6,00,000"
+      },
+      {
+        "id": "RULE_ACADEMIC_LEVEL",
+        "field": "academic_category",
+        "operator": "==",
+        "value": "OVERSEAS_POSTGRAD",
+        "description": "Unconditional offer in accredited foreign university for Master's/Ph.D."
+      }
+    ]
+  }
+]

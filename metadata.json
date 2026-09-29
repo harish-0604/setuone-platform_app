@@ -1,0 +1,6 @@
+{
+  "name": "SetuOne — Unified Scholarship Mobile & Resolution Platform",
+  "description": "One Scholarship Journey. One Trusted Bridge. Mobile-first tribal scholarship eligibility, evidence verification, conflict detection, and officer resolution platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
